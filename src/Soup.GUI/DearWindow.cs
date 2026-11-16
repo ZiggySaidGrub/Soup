@@ -5,5 +5,6 @@ public abstract class DearWindow
     public bool Open = false;
 
     public abstract string Name { get; }
+    public virtual bool Debug => false;
     public abstract void SubmitUI();
 }

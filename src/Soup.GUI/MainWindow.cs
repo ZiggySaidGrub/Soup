@@ -18,6 +18,10 @@ public class MainWindow
             if (!t.IsAbstract && typeof(DearWindow).IsAssignableFrom(t))
             {
                 DearWindow win = (DearWindow) Activator.CreateInstance(t);
+            #if !DEBUG
+                if (win.Debug) continue;
+            #endif
+
                 Windows.Add(win);
             }
         }
