@@ -12,7 +12,8 @@ public static class MainMenuBar
             {
                 foreach (DearWindow window in mainWindow.Windows)
                 {
-                    ImGui.Checkbox(window.Name, ref window.Open);
+                    // ImGui.Checkbox(window.Name, ref window.Open);
+                    ImGui.MenuItem(window.Name, null, ref window.Open);
                 }
                 
                 ImGui.EndMenu();
