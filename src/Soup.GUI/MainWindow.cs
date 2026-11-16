@@ -42,7 +42,15 @@ public class MainWindow
 
         foreach (DearWindow window in Windows)
         {
-            if (window.Open && ImGui.Begin(window.Name, ref window.Open))
+            if (!window.Open) continue;
+
+            if (window is DearWindowNoWindow)
+            {
+                window.SubmitUI();
+                continue;
+            }
+
+            if (ImGui.Begin(window.Name, ref window.Open))
             {
                 window.SubmitUI();
                 ImGui.End();

@@ -8,3 +8,5 @@ public abstract class DearWindow
     public virtual bool Debug => false;
     public abstract void SubmitUI();
 }
+
+public abstract class DearWindowNoWindow : DearWindow { }
