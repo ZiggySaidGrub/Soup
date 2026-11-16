@@ -10,7 +10,7 @@ public class MainWindow
 {
     public bool Open = true;
 
-    private List<DearWindow> windows = [];
+    public List<DearWindow> Windows { get; private set; } = [];
 
     public MainWindow()
     {
@@ -18,39 +18,25 @@ public class MainWindow
             if (!t.IsAbstract && typeof(DearWindow).IsAssignableFrom(t))
             {
                 DearWindow win = (DearWindow) Activator.CreateInstance(t);
-                windows.Add(win);
+                Windows.Add(win);
             }
         }
-        windows.Sort(new Comparison<DearWindow>((x, y) => string.Compare(x.Name, y.Name)));
+        Windows.Sort(new Comparison<DearWindow>((x, y) => string.Compare(x.Name, y.Name)));
     }
     public void SubmitUI()
     {
-        ImGuiWindowFlags flags = ImGuiWindowFlags.MenuBar;
+        MainMenuBar.SubmitUI(this);
 
+        ImGuiWindowFlags flags = ImGuiWindowFlags.None;
         ImGui.SetNextWindowSize(new Vector2(512, 128), ImGuiCond.FirstUseEver);
         if (ImGui.Begin("Soup", ref Open, flags))
         {
-            if (ImGui.BeginMenuBar())
-            {
-                if (ImGui.BeginMenu("Windows"))
-                {
-                    foreach (DearWindow window in windows)
-                    {
-                        ImGui.Checkbox(window.Name, ref window.Open);
-                    }
-                    
-                    ImGui.EndMenu();
-                }
-
-                ImGui.EndMenuBar();
-            }
-
             ImGui.Text("meow");
 
             ImGui.End();
         }
 
-        foreach (DearWindow window in windows)
+        foreach (DearWindow window in Windows)
         {
             if (window.Open && ImGui.Begin(window.Name, ref window.Open))
             {
