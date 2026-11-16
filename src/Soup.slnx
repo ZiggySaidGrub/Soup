@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Soup.Core/Soup.Core.csproj" />
+  <Project Path="Soup.GUI/Soup.GUI.csproj" />
+</Solution>
