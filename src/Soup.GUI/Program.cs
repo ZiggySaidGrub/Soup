@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using ImGuiNET;
 using Veldrid;
 using Veldrid.Sdl2;
@@ -12,10 +13,13 @@ class Program
     private static GraphicsDevice gd;
     private static CommandList cl;
     private static ImGuiRenderer renderer;
+
+    private static MainWindow mainWindow;
+
     static void Main(string[] args)
     {
         VeldridStartup.CreateWindowAndGraphicsDevice(
-            new WindowCreateInfo(50, 50, 1280, 720, Veldrid.WindowState.Normal, "Soup"),
+            new WindowCreateInfo(50, 50, 1280, 720, WindowState.Normal, "Soup"),
             new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true),
             out window,
             out gd
@@ -30,22 +34,24 @@ class Program
         cl = gd.ResourceFactory.CreateCommandList();
         renderer = new ImGuiRenderer(gd, gd.MainSwapchain.Framebuffer.OutputDescription, window.Width, window.Height);
 
+        Setup();
+
         var stopwatch = Stopwatch.StartNew();
         float deltaTime = 0f;
 
-        while (window.Exists)
+        while (window.Exists && mainWindow.Open)
         {
             deltaTime = stopwatch.ElapsedTicks / (float) Stopwatch.Frequency;
             stopwatch.Restart();
 
             InputSnapshot snapshot = window.PumpEvents();
 
-            if (!window.Exists) { break; }
+            if (!window.Exists || !mainWindow.Open) { break; }
 
             renderer.Update(deltaTime, snapshot);
 
             // This is where the ui happens
-            ImGui.Text("meow");
+            SubmitUI();
 
             cl.Begin();
             cl.SetFramebuffer(gd.MainSwapchain.Framebuffer);
@@ -61,5 +67,15 @@ class Program
         renderer.Dispose();
         cl.Dispose();
         gd.Dispose();
+    }
+
+    private static void Setup()
+    {
+        mainWindow = new MainWindow();
+    }
+
+    private static void SubmitUI()
+    {
+        mainWindow.SubmitUI();
     }
 }
