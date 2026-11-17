@@ -33,7 +33,7 @@ public class MainWindow
     }
     public void SubmitUI()
     {
-        MainMenuBar.SubmitUI(this);
+        Tray.SubmitUI(this);
 
         ImGuiWindowFlags flags = ImGuiWindowFlags.None;
         ImGui.SetNextWindowSize(new Vector2(512, 128), ImGuiCond.FirstUseEver);

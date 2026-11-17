@@ -3,9 +3,14 @@ using ImGuiNET;
 
 namespace Soup.GUI;
 
-public static class MainMenuBar
+public static class Tray
 {
     public static void SubmitUI(MainWindow mainWindow)
+    {
+        SubmitMainMenuBar(mainWindow);
+    }
+
+    private static void SubmitMainMenuBar(MainWindow mainWindow)
     {
         ImGui.PushStyleColor(ImGuiCol.MenuBarBg, Vector4.Zero);
         if (ImGui.BeginMainMenuBar())
