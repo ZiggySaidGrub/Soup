@@ -1,3 +1,4 @@
+using System.Numerics;
 using ImGuiNET;
 
 namespace Soup.GUI;
@@ -6,6 +7,7 @@ public static class MainMenuBar
 {
     public static void SubmitUI(MainWindow mainWindow)
     {
+        ImGui.PushStyleColor(ImGuiCol.MenuBarBg, Vector4.Zero);
         if (ImGui.BeginMainMenuBar())
         {
             if (ImGui.BeginMenu("Windows"))
@@ -21,5 +23,6 @@ public static class MainMenuBar
 
             ImGui.EndMainMenuBar();
         }
+        ImGui.PopStyleColor();
     }
 }
