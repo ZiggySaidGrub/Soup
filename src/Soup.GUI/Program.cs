@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using ImGuiNET;
+﻿using System.Diagnostics;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
@@ -15,6 +13,7 @@ class Program
     private static ImGuiRenderer renderer;
 
     private static MainWindow mainWindow;
+    private static Core.Soup soup;
 
     static void Main(string[] args)
     {
@@ -71,7 +70,8 @@ class Program
 
     private static void Setup()
     {
-        mainWindow = new MainWindow();
+        soup = new Core.Soup();
+        mainWindow = new MainWindow(soup);
     }
 
     private static void SubmitUI()

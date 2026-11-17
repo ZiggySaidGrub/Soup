@@ -8,12 +8,16 @@ namespace Soup.GUI;
 
 public class MainWindow
 {
-    public bool Open = true;
+    public Core.Soup Soup;
 
+    public bool Open = true;
     public List<DearWindow> Windows { get; private set; } = [];
 
-    public MainWindow()
+    public MainWindow(Core.Soup soup)
     {
+        Soup = soup;
+
+        // Init Windows
         foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
             if (!t.IsAbstract && typeof(DearWindow).IsAssignableFrom(t))
             {
