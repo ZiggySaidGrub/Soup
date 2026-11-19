@@ -29,14 +29,20 @@ public class Player
     public SongQueue Queue;
     public Song Current;
     public event Action<Song> NewSong;
-    public void Next()
+    public bool Next()
     {
+        if (Queue == null) return false;
+        
         Current = Queue.Next();
         NewSong?.Invoke(Current);
+        return true;
     }
-    public void Back()
+    public bool Back()
     {
+        if (Queue == null) return false;
+
         Current = Queue.Back();
         NewSong?.Invoke(Current);
+        return true;
     }
 }
