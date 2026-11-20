@@ -7,6 +7,15 @@ public enum PlayState
     Playing,
     Paused
 }
+public enum SongState
+{
+    Cleanup,
+    Loading,
+    Loaded
+}
+
+// TODO: This class can probably be improved a lot
+// like in theory everything here works, but it just feels wrong to me
 public class Player
 {
     internal Player() { }
@@ -26,15 +35,42 @@ public class Player
         }
     }
 
-    public SongQueue Queue;
+    private SongState songState = SongState.Loaded;
+    public SongState SongState
+    {
+        get
+        {
+            return songState;
+        }
+        set
+        {
+            Console.WriteLine($"song state being set to {value}");
+            songState = value;
+        }
+    }
+
+    public SongQueue Queue = new SongQueue();
     public Song Current;
-    public event Action<Song> NewSong;
+    public event Action Cleanup;
+    public event Action<Song> LoadNew;
+    public void ReadyForLoad()
+    {
+        if (SongState == SongState.Cleanup)
+        {
+            SongState = SongState.Loading;
+            LoadNew?.Invoke(Current);
+        }
+    }
     public bool Next()
     {
         if (Queue == null) return false;
-        
+
         Current = Queue.Next();
-        NewSong?.Invoke(Current);
+        if (SongState == SongState.Loading || SongState == SongState.Loaded)
+        {
+            SongState = SongState.Cleanup;
+            Cleanup?.Invoke();
+        }
         return true;
     }
     public bool Back()
@@ -42,7 +78,6 @@ public class Player
         if (Queue == null) return false;
 
         Current = Queue.Back();
-        NewSong?.Invoke(Current);
         return true;
     }
 }

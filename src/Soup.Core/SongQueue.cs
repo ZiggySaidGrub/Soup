@@ -4,8 +4,8 @@ namespace Soup.Core;
 
 public class SongQueue
 {
-    public LinkedList<Song> Queue;
-    public LinkedList<Song> BackQueue;
+    public LinkedList<Song> Queue = new LinkedList<Song>([new Song(), new Song(), new Song(), new Song(), new Song(), new Song()]); // Test Queue
+    public LinkedList<Song> BackQueue = [];
     public Song Current;
     public Song Next()
     {

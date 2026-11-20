@@ -40,6 +40,7 @@ public class MainWindow
         if (ImGui.Begin("Soup", ref Open, flags))
         {
             ImGui.Text("meow");
+            if (ImGui.Button("next")) { Soup.Player.Next(); };
 
             ImGui.End();
         }

@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Soup.GUI.Audio;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
@@ -13,6 +15,7 @@ class Program
     private static ImGuiRenderer renderer;
 
     private static MainWindow mainWindow;
+    private static AudioManager audioManager;
     private static Core.Soup soup;
 
     static void Main(string[] args)
@@ -62,6 +65,7 @@ class Program
         }
 
         // Exit
+        Cleanup();
         gd.WaitForIdle();
         renderer.Dispose();
         cl.Dispose();
@@ -71,7 +75,13 @@ class Program
     private static void Setup()
     {
         soup = new Core.Soup();
+
+        audioManager = new AudioManager(soup);
         mainWindow = new MainWindow(soup);
+    }
+    private static void Cleanup()
+    {
+        audioManager.Dispose();
     }
 
     private static void SubmitUI()
