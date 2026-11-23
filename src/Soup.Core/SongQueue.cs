@@ -9,16 +9,24 @@ public class SongQueue
     public Song Current;
     public Song Next()
     {
-        BackQueue.AddLast(Current);
+        if (Current != null) BackQueue.AddLast(Current);
         Current = Queue.First.Value;
         Queue.RemoveFirst();
         return Current;
     }
+    public bool CanGoNext()
+    {
+        return Queue.Count > 0;
+    }
     public Song Back()
     {
-        Queue.AddFirst(Current);
+        if (Current != null) Queue.AddFirst(Current);
         Current = BackQueue.Last.Value;
         BackQueue.RemoveLast();
         return Current;
+    }
+    public bool CanGoBack()
+    {
+        return BackQueue.Count > 0;
     }
 }

@@ -18,6 +18,21 @@ public class AudioManager
 
         soup.Player.Cleanup += Dispose;
         soup.Player.LoadNew += LoadNew;
+        soup.Player.PlayStateChanged += PlayStateChanged;
+    }
+
+    private void PlayStateChanged()
+    {
+        if (outputDevice == null) return;
+
+        if (soup.Player.PlayState == PlayState.Playing && outputDevice.PlaybackState == PlaybackState.Paused)
+        {
+            outputDevice.Play();
+        } 
+        else if (soup.Player.PlayState == PlayState.Paused && outputDevice.PlaybackState == PlaybackState.Playing)
+        {
+            outputDevice.Pause();
+        }
     }
 
     private void LoadNew(Song song)
@@ -29,6 +44,7 @@ public class AudioManager
 
         soup.Player.SongState = SongState.Loaded;
         outputDevice.Play();
+        soup.Player.PlayState = PlayState.Playing;
     }
     public void Dispose()
     {

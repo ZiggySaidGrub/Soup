@@ -30,8 +30,9 @@ public class Player
         }
         set
         {
+            var oldState = playState;
             playState = value;
-            PlayStateChanged?.Invoke();
+            if (oldState != playState) PlayStateChanged?.Invoke();
         }
     }
 
@@ -64,20 +65,27 @@ public class Player
     public bool Next()
     {
         if (Queue == null) return false;
+        if (!Queue.CanGoNext()) return false;
 
         Current = Queue.Next();
-        if (SongState == SongState.Loading || SongState == SongState.Loaded)
-        {
-            SongState = SongState.Cleanup;
-            Cleanup?.Invoke();
-        }
+        StartCleanup();
         return true;
     }
     public bool Back()
     {
         if (Queue == null) return false;
+        if (!Queue.CanGoBack()) return false;
 
         Current = Queue.Back();
+        StartCleanup();
         return true;
+    }
+    private void StartCleanup()
+    {
+        if (SongState == SongState.Loading || SongState == SongState.Loaded)
+        {
+            SongState = SongState.Cleanup;
+            Cleanup?.Invoke();
+        }
     }
 }

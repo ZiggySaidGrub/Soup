@@ -39,8 +39,9 @@ public class MainWindow
         ImGui.SetNextWindowSize(new Vector2(512, 128), ImGuiCond.FirstUseEver);
         if (ImGui.Begin("Soup", ref Open, flags))
         {
-            ImGui.Text("meow");
-            if (ImGui.Button("next")) { Soup.Player.Next(); };
+            if (ImGui.Button("back")) { Soup.Player.Back(); };
+            ImGui.SameLine(); if (ImGui.Button("pause")) { Soup.Player.PlayState = 1 - Soup.Player.PlayState; }
+            ImGui.SameLine(); if (ImGui.Button("next")) { Soup.Player.Next(); };
 
             ImGui.End();
         }
