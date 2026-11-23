@@ -42,16 +42,25 @@ public class AudioManager
 
         outputDevice.Init(audioFile);
 
+        outputDevice.PlaybackStopped += SongOver;
+
         soup.Player.SongState = SongState.Loaded;
         outputDevice.Play();
         soup.Player.PlayState = PlayState.Playing;
     }
+
+    private void SongOver(object s, StoppedEventArgs e)
+    {
+        Console.WriteLine("song finished!");
+        soup.Player.SongOver();
+    }
+
     public void Dispose()
     {
         Console.WriteLine("AudioManager Disposing");
         if (outputDevice != null)
         {
-            outputDevice.PlaybackStopped += (s, e) =>
+            void disposeDevice()
             {
                 Console.WriteLine("playback stopped in dispose");
                 outputDevice?.Dispose();
@@ -61,8 +70,17 @@ public class AudioManager
                 audioFile = null;
 
                 soup.Player.ReadyForLoad();
-            };
-            outputDevice.Stop();
+            }
+
+            if (outputDevice.PlaybackState == PlaybackState.Stopped)
+            {
+                disposeDevice();
+            } else
+            {
+                outputDevice.PlaybackStopped -= SongOver;
+                outputDevice.PlaybackStopped += (s, e) => { disposeDevice(); };
+                outputDevice.Stop();
+            }
         } else
         {
             audioFile?.Dispose();

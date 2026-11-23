@@ -62,6 +62,10 @@ public class Player
             LoadNew?.Invoke(Current);
         }
     }
+    public void SongOver()
+    {
+        Next();
+    }
     public bool Next()
     {
         if (Queue == null) return false;
