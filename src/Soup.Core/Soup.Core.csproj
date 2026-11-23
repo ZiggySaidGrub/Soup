@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+
+    <ApplicationIcon>assets/icon512.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
