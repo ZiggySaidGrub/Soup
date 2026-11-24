@@ -29,4 +29,8 @@
     <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
   </PropertyGroup>
 
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="Assets/icon512.bmp" DestinationFolder="$(OutDir)Assets/" />
+  </Target>
+
 </Project>

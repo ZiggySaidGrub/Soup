@@ -27,6 +27,8 @@ class Program
             out gd
         );
 
+        ApplicationIcon.SetWindowIcon(window.SdlWindowHandle, "Assets/icon512.bmp");
+
         window.Resized += () =>
         {
             gd.MainSwapchain.Resize((uint)window.Width, (uint)window.Height);
