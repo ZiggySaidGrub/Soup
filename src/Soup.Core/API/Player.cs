@@ -64,7 +64,10 @@ public class Player
     }
     public void SongOver()
     {
-        Next();
+        if (!Next())
+        {
+            Cleanup.Invoke();
+        }
     }
     public bool Next()
     {
