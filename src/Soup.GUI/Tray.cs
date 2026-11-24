@@ -5,19 +5,19 @@ namespace Soup.GUI;
 
 public static class Tray
 {
-    public static void SubmitUI(MainWindow mainWindow)
+    public static void SubmitUI(WindowManager windowManager)
     {
-        SubmitMainMenuBar(mainWindow);
+        SubmitMainMenuBar(windowManager);
     }
 
-    private static void SubmitMainMenuBar(MainWindow mainWindow)
+    private static void SubmitMainMenuBar(WindowManager windowManager)
     {
         ImGui.PushStyleColor(ImGuiCol.MenuBarBg, Vector4.Zero);
         if (ImGui.BeginMainMenuBar())
         {
             if (ImGui.BeginMenu("Windows"))
             {
-                foreach (DearWindow window in mainWindow.Windows)
+                foreach (DearWindow window in windowManager.Windows)
                 {
                     // ImGui.Checkbox(window.Name, ref window.Open);
                     ImGui.MenuItem(window.Name, null, ref window.Open);

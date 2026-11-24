@@ -11,32 +11,18 @@ public class MainWindow
     public Core.Soup Soup;
 
     public bool Open = true;
-    public List<DearWindow> Windows { get; private set; } = [];
+    public WindowManager WindowManager;
 
     public MainWindow(Core.Soup soup)
     {
         Soup = soup;
 
-        // Init Windows
-        foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
-            if (!t.IsAbstract && typeof(DearWindow).IsAssignableFrom(t))
-            {
-                DearWindow win = (DearWindow) Activator.CreateInstance(t);
-            #if !DEBUG
-                if (win.Debug) continue;
-            #endif
-
-                Windows.Add(win);
-            }
-        }
-        Windows.Sort(new Comparison<DearWindow>((x, y) => string.Compare(x.Name, y.Name)));
+        WindowManager = new WindowManager();
     }
 
     private float localTime = 0f;
     public void SubmitUI()
     {
-        Tray.SubmitUI(this);
-
         ImGuiWindowFlags flags = ImGuiWindowFlags.None;
         ImGui.SetNextWindowSize(new Vector2(512, 128), ImGuiCond.FirstUseEver);
         if (ImGui.Begin("Soup", ref Open, flags))
@@ -78,21 +64,6 @@ public class MainWindow
             ImGui.End();
         }
 
-        foreach (DearWindow window in Windows)
-        {
-            if (!window.Open) continue;
-
-            if (window is DearWindowNoWindow)
-            {
-                window.SubmitUI();
-                continue;
-            }
-
-            if (ImGui.Begin(window.Name, ref window.Open))
-            {
-                window.SubmitUI();
-                ImGui.End();
-            }
-        }
+        WindowManager.DrawWindows();
     }
 }
