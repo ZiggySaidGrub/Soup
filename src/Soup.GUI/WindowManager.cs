@@ -7,9 +7,16 @@ namespace Soup.GUI;
 
 public class WindowManager
 {
+    public Core.Soup Soup;
+
     public List<DearWindow> Windows { get; private set; } = [];
-    public WindowManager()
+    public MainWindow MainWindow;
+    public WindowManager(Core.Soup soup)
     {
+        Soup = soup;
+
+        MainWindow = new MainWindow(Soup);
+
         // Init Windows
         foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
             if (!t.IsAbstract && typeof(DearWindow).IsAssignableFrom(t))
@@ -28,6 +35,8 @@ public class WindowManager
     public void DrawWindows()
     {
         Tray.SubmitUI(this);
+
+        MainWindow.SubmitUI();
 
         foreach (DearWindow window in Windows)
         {

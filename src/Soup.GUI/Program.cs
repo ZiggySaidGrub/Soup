@@ -14,7 +14,7 @@ class Program
     private static CommandList cl;
     private static ImGuiRenderer renderer;
 
-    private static MainWindow mainWindow;
+    private static WindowManager windowManager;
     private static AudioManager audioManager;
     private static Core.Soup soup;
 
@@ -41,14 +41,14 @@ class Program
         var stopwatch = Stopwatch.StartNew();
         float deltaTime = 0f;
 
-        while (window.Exists && mainWindow.Open)
+        while (window.Exists && windowManager.MainWindow.Open)
         {
             deltaTime = stopwatch.ElapsedTicks / (float) Stopwatch.Frequency;
             stopwatch.Restart();
 
             InputSnapshot snapshot = window.PumpEvents();
 
-            if (!window.Exists || !mainWindow.Open) { break; }
+            if (!window.Exists || !windowManager.MainWindow.Open) { break; }
 
             renderer.Update(deltaTime, snapshot);
 
@@ -77,7 +77,7 @@ class Program
         soup = new Core.Soup();
 
         audioManager = new AudioManager(soup);
-        mainWindow = new MainWindow(soup);
+        windowManager = new WindowManager(soup);
     }
     private static void Cleanup()
     {
@@ -86,6 +86,6 @@ class Program
 
     private static void SubmitUI()
     {
-        mainWindow.SubmitUI();
+        windowManager.DrawWindows();
     }
 }
