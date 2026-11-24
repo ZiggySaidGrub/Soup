@@ -19,6 +19,29 @@ public class AudioManager
         soup.Player.Cleanup += Dispose;
         soup.Player.LoadNew += LoadNew;
         soup.Player.PlayStateChanged += PlayStateChanged;
+
+        soup.Player.PlaybackGet += PlaybackGet;
+        soup.Player.PlaybackSet += PlaybackSet;
+        soup.Player.TotalTimeGet += TotalTimeGet;
+    }
+
+    private TimeSpan? PlaybackGet()
+    {
+        if (audioFile == null) return null;
+
+        return audioFile.CurrentTime;
+    }
+    private void PlaybackSet(TimeSpan time)
+    {
+        if (audioFile == null) return;
+
+        audioFile.CurrentTime = time;
+    }
+    private TimeSpan? TotalTimeGet()
+    {
+        if (audioFile == null) return null;
+
+        return audioFile.TotalTime;
     }
 
     private void PlayStateChanged()

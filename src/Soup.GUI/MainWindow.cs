@@ -31,6 +31,8 @@ public class MainWindow
         }
         Windows.Sort(new Comparison<DearWindow>((x, y) => string.Compare(x.Name, y.Name)));
     }
+
+    private float localTime = 0f;
     public void SubmitUI()
     {
         Tray.SubmitUI(this);
@@ -42,6 +44,23 @@ public class MainWindow
             if (ImGui.Button("back")) { Soup.Player.Back(); };
             ImGui.SameLine(); if (ImGui.Button("pause")) { Soup.Player.PlayState = 1 - Soup.Player.PlayState; }
             ImGui.SameLine(); if (ImGui.Button("next")) { Soup.Player.Next(); };
+            
+            var totalTime = Soup.Player.GetTotalTime();
+            float totalTimeSeconds;
+            if (totalTime == null) { totalTimeSeconds = 0f; } else { totalTimeSeconds = (float) totalTime.Value.TotalSeconds; }
+            
+            ImGui.SliderFloat(" ", ref localTime, 0f, totalTimeSeconds);
+            
+            if (ImGui.IsItemDeactivated())
+            {
+                Console.WriteLine($"you REALLY changed! {localTime}");
+                Soup.Player.SetPlaybackTime(TimeSpan.FromSeconds(localTime));
+            }
+            else if (!ImGui.IsItemActive())
+            {
+                var playbackTime = Soup.Player.GetPlaybackTime();
+                if (playbackTime == null) { localTime = 0f; } else { localTime = (float) playbackTime.Value.TotalSeconds; }
+            }
 
             ImGui.End();
         }

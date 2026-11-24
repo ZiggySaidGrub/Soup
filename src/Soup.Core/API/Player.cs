@@ -92,4 +92,20 @@ public class Player
             Cleanup?.Invoke();
         }
     }
+
+    public event Action<TimeSpan> PlaybackSet;
+    public event Func<TimeSpan?> PlaybackGet;
+    public event Func<TimeSpan?> TotalTimeGet;
+    public void SetPlaybackTime(TimeSpan time)
+    {
+        PlaybackSet?.Invoke(time);
+    }
+    public TimeSpan? GetPlaybackTime()
+    {
+        return PlaybackGet?.Invoke();
+    }
+    public TimeSpan? GetTotalTime()
+    {
+        return TotalTimeGet?.Invoke();
+    }
 }
