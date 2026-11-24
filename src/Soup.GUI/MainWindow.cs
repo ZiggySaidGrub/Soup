@@ -49,11 +49,24 @@ public class MainWindow
             float totalTimeSeconds;
             if (totalTime == null) { totalTimeSeconds = 0f; } else { totalTimeSeconds = (float) totalTime.Value.TotalSeconds; }
             
-            ImGui.SliderFloat(" ", ref localTime, 0f, totalTimeSeconds);
+            TimeSpan localTimeSpan = TimeSpan.FromSeconds(localTime);
+
+            string sliderText = $"{localTimeSpan:m\\:ss}";
+            string sliderLabel = $"{totalTime:m\\:ss}";
+            
+            if (totalTime == null) {
+                sliderLabel = "-:--";
+                sliderText = "-:--";
+            }
+
+            var labelWidth = ImGui.CalcTextSize(sliderLabel).X;
+            var spacing = ImGui.GetStyle().ItemInnerSpacing.X;
+            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - labelWidth - spacing);
+
+            ImGui.SliderFloat(sliderLabel, ref localTime, 0f, totalTimeSeconds, sliderText);
             
             if (ImGui.IsItemDeactivated())
             {
-                Console.WriteLine($"you REALLY changed! {localTime}");
                 Soup.Player.SetPlaybackTime(TimeSpan.FromSeconds(localTime));
             }
             else if (!ImGui.IsItemActive())
